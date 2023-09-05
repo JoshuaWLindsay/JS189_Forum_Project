@@ -1,0 +1,36 @@
+extends layout 
+
+block main
+  div(class="container")
+    div(class="row text-center")
+      a(href=`/churches/${churchName}/series/page/1`)
+        h2=churchName
+    div(class="row text-center")
+      a(href=`/churches/${churchName}/series/${seriesName}/sermons/page/1`)
+        h3=seriesName
+    div(class="row text-center")
+      h4 Holy Conference for "#{sermonName}"
+    div(class="row text-center")
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/#{sermon.youtube_id}?rel=0&modestbranding=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    div(class="row")
+      a(href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/page/1`)
+        h3(class="text-center") Threads
+    div(class="row")
+      h3(class="text-center") Edit Your Thread
+      form(action=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${threadId}/editThread` 
+           method="post")
+        input(class="form-group form-control" 
+              type="text" 
+              placeholder="Group Name" 
+              name="sermonThreadName" 
+              value=sermonThreadName || thread.group_name)
+        textarea(class="form-group form-control" 
+                 rows="4" 
+                 type="text" 
+                 placeholder="Create your own Questions & Prompts or leave blank to use our Default Prompts!" 
+                 name="sermonThreadPrompt")=sermonThreadPrompt || thread.prompt
+        fieldset.actions 
+          button(class="btn btn-primary pull-right") Save
+      fieldset.actions 
+        a(href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${threadId}/page/1`)
+          button(class="btn pull-right") Cancel

@@ -1,0 +1,52 @@
+extends layout 
+
+block main
+  div(class="container")
+    div(class="row text-center")
+      a(href=`/churches/${churchName}/series/page/1`)
+        h2=churchName
+    div(class="row text-center")
+      a(href=`/churches/${churchName}/series/${seriesName}/sermons/page/1`)
+        h3=seriesName
+    div(class="row text-center")
+      h4 Holy Conference for "#{sermonName}"
+    div(class="row text-center")
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/#{sermon.youtube_id}?rel=0&modestbranding=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    div(class="row")
+      h3(class="text-center") Threads
+      if threads === undefined 
+        h4(class="text-center") Waiting for first thread 
+      else
+        each thread in threads
+          div(class="col-xs-2 col-sm-6 col-md-3 col-lg-4 col-xl-6 text-center")
+            a(href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${thread.id}/page/1`) 
+              h4=thread.group_name
+    div(class="row text-center")
+      each page in pageArray
+        if page === +currentPage
+          ul(class="pagination")
+            li(class="page-item active")
+              a(href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/page/${page}`)
+                h6=page
+        else
+          ul(class="pagination")
+            li(class="page-item")
+              a(href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/page/${page}`)
+                h6=page
+
+    div(class="row")
+      h5 Create a Group Thread to Reflect on the Sermon!
+      form(action=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/page/${currentPage}/newThread` 
+           method="post")
+        input(class="form-group form-control" 
+              type="text" 
+              placeholder="Group Name" 
+              name="sermonThreadName" 
+              value=sermonThreadName)
+        textarea(class="form-group form-control" 
+                 rows="4" 
+                 type="text" 
+                 placeholder="Create your own Questions & Prompts or leave blank to use our Default Prompts!" 
+                 name="sermonThreadPrompt")=sermonThreadPrompt
+        fieldset.actions 
+          button(class="btn btn-primary pull-right") Create

@@ -1,0 +1,43 @@
+doctype html 
+
+html(lang="en-US")
+
+  head 
+    title Holy Conferences for Sunday Sermons 
+    meta(charset="UTF-8")
+    link(rel="stylesheet" href="//fonts.googleapis.com/css2?family=Domine&display=swap")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css")
+    link(rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png")
+    link(rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png")
+    link(rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png")
+    link(rel="manifest" href="/images/site.webmanifest")
+    script(src="/JavaScripts/application.js")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+
+  body
+    header 
+      div(class="container-fluid text-center")
+        a(href=`/churches/page/1`)
+          h1 Holy Conferences for Sunday Sermons 
+        h5 A Christian Forum for Pastors, Small Groups, and Families
+        h5 Reflecting on the Sunday Sermon
+        block headerLinks 
+    
+    main
+      div(class="container-fluid")
+        - let kinds = Object.keys(flash || {});
+        if kinds.length > 0
+          each kind in kinds 
+            each message in flash[kind]
+              div(class="text-center alert alert-" + kind role="alert")=message
+
+      block main
+
+  footer 
+    block signIn 
+      div(class="container-fluid form-group text-center")
+        form(action="/signout" method="post")
+          fieldset.actions 
+            p Signed in as #{username}.
+            button(class="btn btn-primary") Sign Out 

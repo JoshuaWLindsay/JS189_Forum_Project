@@ -1,0 +1,69 @@
+extends layout 
+
+block main
+  div(class="container")
+    div(class="row text-center")
+      a(href=`/churches/${churchName}/series/page/1`)
+        h2=churchName
+    div(class="row text-center")
+      a(href=`/churches/${churchName}/series/${seriesName}/sermons/page/1`)
+        h3=seriesName
+    div(class="row text-center")
+      h4 Holy Conference for "#{sermonName}"
+    div(class="row text-center")
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/#{sermon.youtube_id}?rel=0&modestbranding=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    div(class="row")
+      a(href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/page/1`)
+        h3(class="text-center") Threads
+      h3(class="text-center")=thread.group_name
+      h3(class="text-left") Questions & Prompts
+      h4(style="white-space: pre-line")=thread.prompt
+      h5=thread.username
+      h5=thread.date.toLocaleString()
+        if username === thread.username
+          a(class="btn bi bi-pencil-square" href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${threadId}/editThread`)
+      if username === thread.username
+        h5(class="text-danger") DELETE THREAD
+          form.delete(action=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${threadId}/deleteThread`
+                      method="post")
+            button(class="btn btn-primary bi bi-x-square-fill")
+      h4="_______".repeat(5)
+    div(class="row")
+      h3(class="text-right") Reflections
+        if posts === undefined 
+          h4(class="text-right") Waiting for first post 
+        else
+          each post in posts
+            h4(class="text-right" style="white-space: pre-line")=post.content
+            if username === post.username
+              form.delete(action=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${threadId}/deletePost/${post.id}`
+                          method="post")
+                button(class="btn btn-primary bi bi-x-square-fill pull-right")
+              a(class="btn bi bi-pencil-square pull-right" href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${threadId}/editPost/${post.id}`)
+            h5(class="text-right")=post.username
+            h6(class="text-right")=post.date.toLocaleString()
+            h6(class="text-right")="_______".repeat(10)
+    div(class="row text-center")
+      each page in pageArray
+        if page === +currentPage
+          ul(class="pagination")
+            li(class="page-item active")
+              a(href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${threadId}/page/${page}`)
+                h6=page
+        else
+          ul(class="pagination")
+            li(class="page-item")
+              a(href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${threadId}/page/${page}`)
+                h6=page
+    div(class="row")
+      form(action=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${threadId}/page/${currentPage}/post` 
+           method="post")
+        textarea( class="form-group form-control"
+                  rows="4"
+                  type="text"
+                  placeholder="Leave a reflection"
+                  maxlength="1000"
+                  name="postContent"
+                )=postContent
+        fieldset.actions 
+          button(class="btn btn-primary pull-right") Post

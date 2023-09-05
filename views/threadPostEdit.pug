@@ -1,0 +1,37 @@
+extends layout 
+
+block main
+  div(class="container")
+    div(class="row text-center")
+      a(href=`/churches/${churchName}/series/page/1`)
+        h2=churchName
+    div(class="row text-center")
+      a(href=`/churches/${churchName}/series/${seriesName}/sermons/page/1`)
+        h3=seriesName
+    div(class="row text-center")
+      h4 Holy Conference for "#{sermonName}"
+    div(class="row text-center")
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/#{sermon.youtube_id}?rel=0&modestbranding=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    div(class="row")
+      a(href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/page/1`)
+        h3(class="text-center") Threads
+      h3(class="text-left") Questions & Prompts
+      h4(style="white-space: pre-line")=thread.prompt
+      h5=thread.username
+      h5=thread.date.toLocaleString()
+      h4="_______".repeat(5)
+    div(class="row")
+      h3(class="text-center") Edit Your Post
+      form(action=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${threadId}/page/${currentPage}/editPost/${postId}` 
+           method="post")
+        textarea( class="form-group form-control"
+                  rows="4"
+                  type="text"
+                  placeholder="Leave a reflection"
+                  name="postContent"
+                )=postContent || post.content
+        fieldset.actions 
+          button(class="btn btn-primary pull-right") Save
+      fieldset.actions 
+        a(href=`/churches/${churchName}/series/${seriesName}/sermons/${sermonName}/threads/${threadId}/page/1`)
+          button(class="btn pull-right") Cancel

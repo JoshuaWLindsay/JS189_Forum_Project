@@ -1,0 +1,21 @@
+extends layout 
+
+block main 
+  div(class="container")
+    div(class="row") 
+      each church in churches 
+        div(class="col-xs-2 col-sm-6 col-md-3 col-lg-4 col-xl-6 text-center")
+          a(href=`/churches/${church.name}/series/page/1`)
+            h2=church.name
+    div(class="row text-center")
+      each page in pageArray
+        if page === +currentPage
+          ul(class="pagination")
+            li(class="page-item active")
+              a(href=`/churches/page/${page}`)
+                h6=page
+        else
+          ul(class="pagination")
+            li(class="page-item")
+              a(href=`/churches/page/${page}`)
+                h6=page
